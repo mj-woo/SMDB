@@ -76,7 +76,8 @@ def create_movies(data: list[schemas.Movie], db: Session = Depends(get_db)):
     for per_movie in data:
         db_movie = crud.get_movie_match(db, openDate=per_movie.openDate, title=per_movie.title, titleEng=per_movie.titleEng, runningTimeMinute=per_movie.runningTimeMinute)
         if db_movie:
-            raise HTTPException(status_code=400, detail="Movie already registered")
+            # raise HTTPException(status_code=400, detail="Movie already registered")
+            continue
         result = crud.insert_data_into_db(db=db, data=per_movie)
         results.append(result)
     return results
