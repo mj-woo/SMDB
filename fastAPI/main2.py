@@ -97,8 +97,9 @@ class Genre(str, Enum):
 # returns a list with each movie metadata as an item in dict format
 @app.get("/movies/filter/")
 def filter(openyear: Union[int, None] = None, endyear: Union[int, None] = None, genres: list[Genre] = Query(None, description="List of genres to filter by"), 
-           q: Union[str, None] = None, db: Session = Depends(get_db)):
-    movies = crud.searchquery(db, genres, openyear, endyear, q)
+           q: Union[str, None] = None, offset: int = Query(0, description="Offset for pagination"),limit: int = Query(10, description="Limit for pagination"),
+           db: Session = Depends(get_db)):
+    movies = crud.searchquery(db, genres, openyear, endyear, offset, limit, q)
     return movies
 
 # Most Loved Movies in a list format
