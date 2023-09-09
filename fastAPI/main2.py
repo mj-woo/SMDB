@@ -25,6 +25,11 @@ app.add_middleware(
     allow_credentials=True, 
 )
 
+# health check
+@app.get("/health")
+def health():
+    return "OK"
+
 # Dependency
 def get_db():
     db = SessionLocal()
