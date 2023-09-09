@@ -115,19 +115,27 @@ def all_movies_dataset(dataset_list: list, result: list, final:list):
     return final
 
 # returns filtered movies based on the user's query / filter options
-def searchquery(db: Session, genres: list[str], openyear: Union[int, None]=0, endyear: Union[int, None]=9999, offset: int = 0,
-limit: int = 10, q: Union[str,None]=None):
+def searchquery(db: Session, genres: list[str], openyear: Union[int, None]=0, endyear: Union[int, None]=9999, page: int = 1, per_page: int = 15, q: Union[str,None]=None):
     result = filtering(db, genres, openyear, endyear)
     final = []
     to_return = {}
-    return_startidx = offset
-    return_endidx = limit
+    # return_startidx = offset
+    # return_endidx = limit
     is_last = False
     condition = True
 
+    offset = 0
+    limit = per_page
+
+    start_idx = (page-1) * per_page
+    end_idx = page * per_page
+
+    initial_start = start_idx
+    initial_end = end_idx
+
     if q is not None:
         while(condition):
-            url = f"https://snu.dataverse.ac.kr/api/search?q={q}&subtree=movies&start={offset}&per_page={limit}"
+            url = f"https://snu.dataverse.ac.kr/api/search?q={q}&subtree=movies&start={offset}&per_page={per_page}"
             headers = {
                 "X-Dataverse-key": API_KEY
             }
@@ -148,12 +156,12 @@ limit: int = 10, q: Union[str,None]=None):
 
     original_data_len = len(final)
 
-    if return_startidx + return_endidx >= original_data_len:
+    if initial_end >= original_data_len:
        is_last = True
     to_return['isLast'] = is_last
             
     # Apply offset and limit to the final result
-    paginated_final = final[return_startidx : return_startidx + return_endidx]
+    paginated_final = final[initial_start : initial_end]
     to_return['data'] = paginated_final
     to_return['totalCount'] = original_data_len
     return to_return
