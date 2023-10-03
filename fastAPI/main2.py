@@ -110,7 +110,7 @@ def filter(openyear: Union[int, None] = None, endyear: Union[int, None] = None, 
 
 # Most Loved Movies in a list format
 @app.get("/movies/mostloved/")
-def mostloved(page: int = 1, per_page: int = 15, db: Session = Depends(get_db)):
+def mostloved(page: int = 0, per_page: int = 15, db: Session = Depends(get_db)):
     result = []
     to_return = {}
     condition = True
@@ -121,7 +121,7 @@ def mostloved(page: int = 1, per_page: int = 15, db: Session = Depends(get_db)):
     offset = 0
     limit = per_page
 
-    start_idx = (page-1) * per_page
+    start_idx = (page) * per_page
     end_idx = page * per_page
 
     # initial_start = start_idx
@@ -169,7 +169,7 @@ def today():
 
 # returns movies that are currently on screen 
 @app.get("/movies/onscreen")
-def onscreen(page: int = 1, per_page: int = 15, db: Session = Depends(get_db)):
+def onscreen(page: int = 0, per_page: int = 15, db: Session = Depends(get_db)):
   onscreen_list = []
   to_return = {}
 #   return_startidx = offset
@@ -177,7 +177,7 @@ def onscreen(page: int = 1, per_page: int = 15, db: Session = Depends(get_db)):
   offset = 0
   limit = per_page
   is_last = False
-  start_idx = (page-1) * per_page
+  start_idx = (page) * per_page
   end_idx = page * per_page
 
 #   initial_start = start_idx
@@ -237,14 +237,14 @@ def onscreen(page: int = 1, per_page: int = 15, db: Session = Depends(get_db)):
 
 # returns movies that are will be released in the coming two years
 @app.get("/movies/comingsoon")
-def comingsoon(page: int = 1, per_page: int = 15, db: Session = Depends(get_db)):
+def comingsoon(page: int = 0, per_page: int = 15, db: Session = Depends(get_db)):
   to_return = {}
   is_last = False
 
 #   offset = 0
 #   limit = per_page
 
-  start_idx = (page-1) * per_page
+  start_idx = (page) * per_page
   end_idx = page * per_page
 
 #   initial_start = start_idx
@@ -306,7 +306,7 @@ def comingsoon(page: int = 1, per_page: int = 15, db: Session = Depends(get_db))
     
 # returns movies that are off screen
 @app.get("/movies/offscreen")
-def offscreen(page: int = 1, per_page: int = 15, db: Session = Depends(get_db)):
+def offscreen(page: int = 0, per_page: int = 15, db: Session = Depends(get_db)):
 #   return_startidx = offset
 #   return_endidx = limit
   to_return = {}
@@ -318,7 +318,7 @@ def offscreen(page: int = 1, per_page: int = 15, db: Session = Depends(get_db)):
 
   # offset = 0
 
-  start_idx = (page-1) * per_page
+  start_idx = (page) * per_page
   end_idx = page * per_page
 
 #   initial_start = start_idx
